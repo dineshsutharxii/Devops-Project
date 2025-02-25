@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Docker & Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: Build Docker images
+        run: docker-compose build
+
+      - name: Run tests
+        run: docker-compose up -d && sleep 5 && docker-compose exec flask-app pytest tests/
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag flask-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Docker & Docker Compose on EC2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: Deploy to AWS EC2
+        env:
+          SSH_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_USER: ubuntu
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          echo "$SSH_KEY" > deploy_key.pem
+          chmod 600 deploy_key.pem
+          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST "
+          sudo apt-get update &&
+          sudo apt-get install -y docker.io docker-compose &&
+          sudo systemctl start docker &&
+          sudo systemctl enable docker &&
+          cd /home/ubuntu/Devops-with-Aws &&
+          git pull origin main &&
+          docker-compose up -d --build"
