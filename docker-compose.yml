@@ -9,7 +9,9 @@ services:
       - "6379:6379"
 
   flask-app:
-    build: .
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     container_name: flask-app
     restart: always
     ports:
