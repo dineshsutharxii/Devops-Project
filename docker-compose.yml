@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   flask-app:
-    build: ./app
+    build: .
     ports:
       - "5000:5000"
     depends_on:
-      - redis
-
-  redis:
-    image: redis:latest
-    restart: always
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      retries: 3
+      start_period: 10s
