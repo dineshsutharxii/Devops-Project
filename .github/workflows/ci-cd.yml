@@ -32,12 +32,14 @@ jobs:
       #- name: Run Tests
       #  run: docker-compose up -d && sleep 10 && docker-compose run --rm flask-app pytest tests/
 
+      - name: Tag Docker Image
+        run: docker tag flask-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Tag and Push Docker Image
         run: |
-          docker tag flask-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
 
   deploy:
