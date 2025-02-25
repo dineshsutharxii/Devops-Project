@@ -13,17 +13,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Docker & Docker Compose
+      - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
+          sudo apt-get remove -y containerd docker docker-engine docker.io || true
+          sudo apt-get autoremove -y
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
           sudo systemctl start docker
           sudo systemctl enable docker
 
-      - name: Build Docker images
+      - name: Build Docker Images
         run: docker-compose build
 
-      - name: Run tests
+      - name: Run Tests
         run: docker-compose up -d && sleep 5 && docker-compose exec flask-app pytest tests/
 
       - name: Log in to Docker Hub
@@ -39,10 +45,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Docker & Docker Compose on EC2
+      - name: Install Dependencies on EC2
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
+          sudo apt-get remove -y containerd docker docker-engine docker.io || true
+          sudo apt-get autoremove -y
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
           sudo systemctl start docker
           sudo systemctl enable docker
 
@@ -61,4 +73,5 @@ jobs:
           sudo systemctl enable docker &&
           cd /home/ubuntu/Devops-with-Aws &&
           git pull origin main &&
+          docker-compose down &&
           docker-compose up -d --build"
