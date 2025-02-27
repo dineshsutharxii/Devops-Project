@@ -14,5 +14,8 @@ COPY . .
 # Expose the application port
 EXPOSE 5000
 
+# Install pytest explicitly
+RUN pip install pytest
+
 # Run the Flask application
 CMD ["python", "main.py"]
