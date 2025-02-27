@@ -19,3 +19,13 @@ services:
     depends_on:
       redis:
         condition: service_started
+
+  test-runner:
+    build:
+      context: ./app
+      dockerfile: Dockerfile  # Use the same image as flask-app
+    container_name: test-runner
+    depends_on:
+      flask-app:
+        condition: service_healthy  # Ensures flask-app is ready before running tests
+    command: ["pytest", "tests/"]  # Runs pytest automatically
