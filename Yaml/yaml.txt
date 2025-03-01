@@ -121,3 +121,153 @@ jobs:
       - name: Run Tests
         run: pytest tests/
 
+
+#Key value pair
+"Hello" : "This is Yaml file"
+1 : "I am one"
+
+#lists
+- apple
+- banana
+- mango
+- Apple
+
+---
+
+#invalid yaml
+cities:
+ - Mumbai
+- Delhi
+ - Blr
+
+---
+
+#valid yaml
+cities:
+- Mumbai
+- Blr
+- Delhi
+
+# Multiple lines in single line.
+message: >
+This is all
+lines are into
+single line.
+
+#same as
+message: This is all lines are into single line.
+
+number: 5
+marks: !!float 95.0
+marks: 98.0
+boolea: No #n, N, false, False, FALSE
+boolea: Yes #y, N, true, TURE
+
+#Floating point numbers
+marks: !!float 99.00
+infi: !!float .inf
+not_a_num: !!float .nan
+
+#string
+me: !!str Diapk singh
+
+#bool
+is_it: !!bool No
+
+
+#dates and time
+date: !!timestamp 2025-01-03
+
+#ADVANCED DATATYPE
+#sequence
+student: !!seq
+ - name
+ - roll number
+ - class
+#same as
+student: [name, roll number, class]
+
+#sparse seq {some key will be empty}
+sparse_seq:
+ - Hello
+ - How
+ -
+ - you
+ -
+
+#nested sequence
+outer_seq:
+- inner_sq_1:
+  - hello1
+  - world1
+- inner_sq_2:
+  - hello2
+  - World2
+
+#key:value pairs
+!!map
+name: Dipak singh
+role:
+ job: student
+ exp: 4 years
+#same as
+name: Diapk singh
+role: { job: student, exp: 4 years}
+
+#pairs: key may have duplicate values
+pair_example: !!pairs
+ - job: student
+ - job: teacher
+#same as
+pair_example: !!pairs [job: student, job: teacher]
+#the above will be an array of hashtables
+
+#!!set will allow you to have unique values
+names: !!set
+? Dipak
+? Ramesh
+? Nitin
+
+
+#dictionary !!omap
+student: !!omap
+ - Dipak:
+    name: DS
+    age: 25
+    height: 170
+ - Ramesh:
+    name: RG
+    age: 40
+
+#reusing some properties: we use anchors  '&' for giving the name and '<<: *' for referancing that name
+linkings: &like
+  fav_fruit: mango
+  dislikes: grapes
+
+person1:
+  Name: Dipak
+  <<: *like
+person2:
+  Name: Ramesh
+  <<: *like
+  dislikes: chikoooooo  #overwrite the dislikes: grapes
+person3:
+  Name: !!str Nitin
+  <<: *like
+  fav_fruit: strawberry
+
+#test you knowledge
+# make yaml file for school->[name, principal, students] -> Students have many student1, student2 etc with field
+# like name, roll no, marks
+school:
+  name: DPS
+  principal: Dipak singh
+  Students:
+    student1:
+      name: Ramaj
+      roll_no: 01
+      marks: 99
+    student2:
+      name: !!str Hippo
+      roll_no: !!int 3
+      marks: !!float 99.5
