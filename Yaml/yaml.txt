@@ -11,3 +11,112 @@ Benefits:
 - It has strict syntax - INDENTATION is IMPORTANT
 - easily converted to JSON, XML
 - More powerful when representing complex data
+
+YAML - YAML ain't markup language
+     - Yet another markup language
+
+- It is data format used to exchange the data
+- Similar to XML and JSON
+- It is case sensitive.
+- mostly use for configuration
+- In YAML, you can only store data, NOT COMMANDS
+- You can't use TABS in YAML, only space counts.
+- It Will be key: value pair most of the time
+
+
+Benefits:
+- simple and easy to read
+- It has strict syntax - INDENTATION is IMPORTANT
+- easily converted to JSON, XML
+- More powerful when representing complex data
+
+📌 Basic YAML Syntax
+1. Key-Value Pairs
+	name: John Doe
+	age: 30
+	city: Mumbai
+2. Indentation Matters (Use spaces, not tabs)person:
+	name: John Doe
+	age: 30
+	city: Mumbai
+3. Lists (Arrays)
+	fruits:
+	 - Apple
+	 - Banana
+	 - Mango
+	ORRR
+	fruits: [Apple, Banana, Mango]
+4. Dictionaries (Objects)
+	employee:
+	  name: Alice
+	  role: Developer
+	  skills:
+	    - Python
+	    - JavaScript
+5. Multiline Strings
+	description: |
+	  This is a multi-line
+	  string in YAML.
+6. Inline Key-Value Lists
+	address: { city: Bangalore, country: India }
+
+📌 Advanced YAML Concepts
+1️⃣ Data Types
+YAML supports:
+- Strings
+- Numbers
+- Booleans (true, false)
+- Null (null or ~)
+- Lists
+- Dictionaries
+Example -
+	name: "John"
+	age: 30
+	married: false
+	children: null
+2️⃣ Nested Objects
+server:
+  name: app-server
+  ip: 192.168.1.1
+  ports:
+    - 80
+    - 443
+
+3️⃣ YAML Aliases & Anchors (Reusability)
+Use & (Anchor) to define a value
+Use * (Alias) to reference it
+defaults: &app_defaults
+  environment: production
+  debug: false
+
+app1:
+  <<: *app_defaults
+  name: MyApp
+
+app2:
+  <<: *app_defaults
+  name: AnotherApp
+  debug: true  # Overriding default value
+
+4️⃣ Environment Variables in YAML
+database:
+  user: ${DB_USER}
+  password: ${DB_PASS}
+
+5️⃣ YAML in CI/CD (GitHub Actions)
+Example GitHub Actions Workflow:
+name: CI/CD Pipeline
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest tests/
+
