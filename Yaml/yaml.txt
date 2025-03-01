@@ -5,6 +5,7 @@ YAML - YAML ain't markup language
 - Similar to XML and JSON
 - mostly use for configuration
 - In YAML, you can only store data, NOT COMMANDS
+- there is concept of document in YAML and each are separated by (---)
 
 Benefits:
 - simple and easy to read

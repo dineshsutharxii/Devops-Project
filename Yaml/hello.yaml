@@ -8,9 +8,41 @@
 - mango
 - Apple
 
+---
+
 #invalid yaml
 cities:
  - Mumbai
 - Delhi
  - Blr
+
+---
+
+#valid yaml
+cities:
+- Mumbai
+- Blr
+- Delhi
+...
+
+#datatypes in yaml
+#String variables
+me: Dipak Singh
+location: "India"
+job: 'SDE'
+
+# Strings of multiple lines.
+# | is used for mutliple lines
+bio: |
+My name is dipak singh.
+I am good manager
+
+# Multiple lines in single line.
+message: >
+This is all
+lines are into
+single line.
+
+#same as 
+message: This is all lines are into single line.
 
