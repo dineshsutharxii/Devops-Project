@@ -1,0 +1,16 @@
+#Key value pair
+"Hello" : "This is Yaml file"
+1 : "I am one"
+
+#lists
+- apple
+- banana
+- mango
+- Apple
+
+#invalid yaml
+cities:
+ - Mumbai
+- Delhi
+ - Blr
+

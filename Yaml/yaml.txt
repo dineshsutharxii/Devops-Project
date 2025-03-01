@@ -1,0 +1,13 @@
+YAML - YAML ain't markup language
+     - Yet another markup language
+
+- It is data format used to exchange the data
+- Similar to XML and JSON
+- mostly use for configuration
+- In YAML, you can only store data, NOT COMMANDS
+
+Benefits:
+- simple and easy to read
+- It has strict syntax - INDENTATION is IMPORTANT
+- easily converted to JSON, XML
+- More powerful when representing complex data
