@@ -1,3 +1,32 @@
-name: Github Actions
+#GitHub Actions Workflow Structure
+A GitHub Actions workflow is a YAML file stored in .github/workflows/.
+
+name: CI/CD Pipeline  # Workflow name
+
+on:  # When to trigger the workflow
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:  # Define jobs (tasks)
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu as the runner
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest tests/
 
 
