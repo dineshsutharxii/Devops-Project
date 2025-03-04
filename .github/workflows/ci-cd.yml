@@ -25,7 +25,7 @@ jobs:
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
           sudo systemctl start docker
           sudo systemctl enable docker
-
+          ssh -i "devops.pem" ubuntu@ec2-13-201-73-139.ap-south-1.compute.amazonaws.com
       - name: Build Docker Images
         run: docker-compose build
 
