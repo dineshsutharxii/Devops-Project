@@ -13,4 +13,4 @@ def test_counter():
 
     assert response1.status_code == 200
     assert response2.status_code == 200
-    assert response2.json()["counter"] + 1 == response1.json()["counter"] + 2
+    assert response2.json()["counter"] + 2 == response1.json()["counter"] + 3
